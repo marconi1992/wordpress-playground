@@ -1,0 +1,37 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    build: ./
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+      - ./wp-content/plugins:/var/www/html/wp-content/plugins
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: 12345
+      WORDPRESS_DB_NAME: playground
+      WORDPRESS_DEBUG: '1'
+
+  db:
+    image: mysql:5.7
+    restart: always
+    volumes:
+      - ./db:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: playground
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: 12345
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+
+  newsapi:
+    build: ./mock-news-api
+    volumes:
+      - ./mock-news-api/mock-data.json:/app/mock-data.json
+    restart: always
+    working_dir: /app
+    volumes:
+      - ./mock-news-api:/app
