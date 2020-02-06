@@ -43,6 +43,8 @@ class News_Sync_Command {
 
 			$plugin_instance->set_news_article_meta_box($post_id, $plugin_instance->external_url_id, $external_url);
 		}
+
+		WP_CLI::success("Sync Finished");
     }
 }
 
